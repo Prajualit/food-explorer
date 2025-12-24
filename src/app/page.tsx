@@ -303,7 +303,7 @@ export default function Home() {
                 </div>
 
                 {hasMore && !searchTerm && (
-                  <div className="flex justify-center mt-96">
+                  <div className="flex justify-center mt-12">
                     <button
                       onClick={handleLoadMore}
                       disabled={loading}
