@@ -243,7 +243,7 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-10">
+      <div className="container mx-auto px-4 pt-6">
         {error && (
           <div className="bg-neutral-900 border border-neutral-700 text-neutral-300 px-6 py-5 rounded-2xl mb-8 text-center max-w-3xl mx-auto">
             <div className="flex items-center justify-center gap-3 mb-2">
@@ -303,7 +303,7 @@ export default function Home() {
                 </div>
 
                 {hasMore && !searchTerm && (
-                  <div className="flex justify-center mt-12">
+                  <div className="flex justify-center mt-8">
                     <button
                       onClick={handleLoadMore}
                       disabled={loading}
@@ -411,7 +411,7 @@ export default function Home() {
         ) : null}
       </div>
 
-      <footer className="border-t border-neutral-800 mt-16 py-8">
+      <footer className="border-t border-neutral-800 mt-8 py-8">
         <div className="container mx-auto px-4 text-center">
           <p className="text-neutral-500 text-sm">
             Powered by{" "}
