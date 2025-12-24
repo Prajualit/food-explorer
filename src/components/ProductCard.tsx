@@ -1,7 +1,11 @@
+"use client";
+
 import { Product } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { useAppDispatch } from "@/store/hooks";
+import { addToCart } from "@/store/cartSlice";
 
 interface ProductCardProps {
   product: Product;
@@ -47,22 +51,28 @@ const getGradeStyles = (grade?: string) => {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const dispatch = useAppDispatch();
   const imageUrl =
     product.image_small_url || product.image_url || product.image_front_url;
   const rawGrade = product.nutriscore_grade || product.nutrition_grades;
-  // Only accept valid grades (a-e), treat everything else as no score
   const validGrades = ['a', 'b', 'c', 'd', 'e'];
   const nutritionGrade = rawGrade && validGrades.includes(rawGrade.toLowerCase()) ? rawGrade : undefined;
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
+  const [addedToCart, setAddedToCart] = useState(false);
   const gradeStyles = getGradeStyles(nutritionGrade);
 
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    dispatch(addToCart(product));
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 2000);
+  };
+
   return (
-    <Link href={`/product/${product.code}`}>
-      <div className="bg-neutral-900 border border-neutral-800 rounded-2xl hover:border-neutral-600 transition-all duration-300 overflow-hidden h-full flex flex-col cursor-pointer hover:shadow-xl hover:shadow-black/30 group hover:-translate-y-1 relative z-0">
-        {/* Product Image */}
+    <div className="bg-neutral-900 border border-neutral-800 rounded-2xl hover:border-neutral-600 transition-all duration-300 overflow-hidden h-full flex flex-col cursor-pointer hover:shadow-xl hover:shadow-black/30 group hover:-translate-y-1 relative z-0">
+      <Link href={`/product/${product.code}`} className="flex-1 flex flex-col">
         <div className="relative w-full h-52 bg-neutral-800/30 overflow-hidden">
-          {/* Decorative gradient overlay */}
           <div className="absolute inset-0 bg-linear-to-t from-neutral-900 via-transparent to-transparent opacity-60 pointer-events-none"></div>
 
           {imageUrl && !imageError ? (
@@ -102,7 +112,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
 
-        {/* Product Info */}
         <div className="p-5 flex-1 flex flex-col">
           <h3 className="font-bold text-base mb-2 line-clamp-2 min-h-12 text-white leading-tight group-hover:text-neutral-300 transition-colors">
             {product.product_name || "Unknown Product"}
@@ -133,9 +142,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
 
-          {/* Bottom section */}
           <div className="mt-auto pt-3 border-t border-neutral-800 flex items-center justify-between">
-            {/* Nutri-score label */}
             <div className="flex items-center gap-2">
               {nutritionGrade ? (
                 <div className="flex items-center gap-1.5">
@@ -151,7 +158,6 @@ export default function ProductCard({ product }: ProductCardProps) {
               )}
             </div>
 
-            {/* View arrow */}
             <div className="flex items-center gap-1 text-neutral-500 group-hover:text-white transition-colors">
               <span className="text-xs font-medium">View</span>
               <svg
@@ -170,7 +176,54 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
           </div>
         </div>
+      </Link>
+
+      <div className="p-4 pt-0">
+        <button
+          onClick={handleAddToCart}
+          className={`w-full py-2.5 rounded-full font-bold text-sm transition-all ${
+            addedToCart
+              ? "bg-green-500 text-white"
+              : "bg-white hover:bg-neutral-200 text-black hover:scale-105"
+          }`}
+        >
+          {addedToCart ? (
+            <span className="flex items-center justify-center gap-2">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              ADDED TO CART
+            </span>
+          ) : (
+            <span className="flex items-center justify-center gap-2">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                />
+              </svg>
+              ADD TO CART
+            </span>
+          )}
+        </button>
       </div>
-    </Link>
+    </div>
   );
 }

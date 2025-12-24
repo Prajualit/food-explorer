@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import ProductCard from "@/components/ProductCard";
 import SearchBar from "@/components/SearchBar";
 import CategoryFilter from "@/components/CategoryFilter";
 import SortSelect from "@/components/SortSelect";
+import CartButton from "@/components/CartButton";
+import Cart from "@/components/Cart";
 import { Product, SortOption } from "@/types/product";
 import {
   searchProducts,
@@ -27,12 +29,7 @@ export default function Home() {
 
   const categories = getPopularCategories();
 
-  // Fetch products
-  useEffect(() => {
-    fetchProducts();
-  }, [selectedCategory, page]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -52,7 +49,6 @@ export default function Home() {
 
       setHasMore(result.page < result.page_count);
 
-      // Show message if no products returned
       if (result.products.length === 0 && page === 1) {
         setError(
           "Unable to load products from OpenFoodFacts API. The service may be experiencing high traffic or temporary downtime. " +
@@ -67,7 +63,11 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory, page]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const handleSearch = async () => {
     if (!searchTerm.trim()) {
@@ -82,7 +82,6 @@ export default function Home() {
       setPage(1);
 
       if (searchType === "barcode") {
-        // Search by barcode
         const result = await getProductByBarcode(searchTerm.trim());
         if (result.status === 1 && result.product) {
           setProducts([result.product]);
@@ -92,7 +91,6 @@ export default function Home() {
           setError("Product not found with this barcode.");
         }
       } else {
-        // Search by name
         const result = await searchProducts(searchTerm, 1);
         setProducts(result.products);
         setHasMore(result.page < result.page_count);
@@ -115,7 +113,6 @@ export default function Home() {
     setPage((prev) => prev + 1);
   };
 
-  // Sort products
   const sortedProducts = [...products].sort((a, b) => {
     if (!sortOption) return 0;
 
@@ -141,10 +138,12 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-neutral-950">
-      {/* Hero Header */}
       <header className="bg-neutral-900 border-b border-neutral-800 sticky top-0 z-50 backdrop-blur-xl bg-opacity-95">
         <div className="container mx-auto px-4 py-8 relative">
-          {/* Logo/Title */}
+          <div className="absolute top-8 right-4">
+            <CartButton />
+          </div>
+
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center">
@@ -171,7 +170,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Search Bar */}
           <div className="mb-6">
             <SearchBar
               value={searchTerm}
@@ -185,7 +183,6 @@ export default function Home() {
             />
           </div>
 
-          {/* Search Type Toggle */}
           <div className="flex justify-center gap-3 mb-8">
             <button
               onClick={() => setSearchType("name")}
@@ -235,7 +232,6 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Filters */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
             <CategoryFilter
               categories={categories}
@@ -247,9 +243,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Content */}
       <div className="container mx-auto px-4 py-10">
-        {/* Error Message */}
         {error && (
           <div className="bg-neutral-900 border border-neutral-700 text-neutral-300 px-6 py-5 rounded-2xl mb-8 text-center max-w-3xl mx-auto">
             <div className="flex items-center justify-center gap-3 mb-2">
@@ -274,7 +268,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Loading State */}
         {loading && page === 1 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {[...Array(8)].map((_, index) => (
@@ -282,9 +275,7 @@ export default function Home() {
                 key={index}
                 className="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden h-full"
               >
-                {/* Skeleton Image */}
                 <div className="relative w-full h-52 shimmer"></div>
-                {/* Skeleton Content */}
                 <div className="p-5">
                   <div className="h-5 shimmer rounded-lg mb-3 w-4/5"></div>
                   <div className="h-4 shimmer rounded-lg w-2/3 mb-3"></div>
@@ -300,7 +291,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Products Grid */}
         {!loading || page > 1 ? (
           <>
             {sortedProducts.length > 0 ? (
@@ -312,7 +302,6 @@ export default function Home() {
                   ))}
                 </div>
 
-                {/* Load More Button */}
                 {hasMore && !searchTerm && (
                   <div className="flex justify-center mt-96">
                     <button
@@ -422,7 +411,6 @@ export default function Home() {
         ) : null}
       </div>
 
-      {/* Footer */}
       <footer className="border-t border-neutral-800 mt-16 py-8">
         <div className="container mx-auto px-4 text-center">
           <p className="text-neutral-500 text-sm">
@@ -438,6 +426,8 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      <Cart />
     </main>
   );
 }
