@@ -186,7 +186,7 @@ export default function Home() {
           <div className="flex justify-center gap-3 mb-8">
             <button
               onClick={() => setSearchType("name")}
-              className={`px-8 py-2.5 rounded-full transition-all font-bold text-sm tracking-wide flex items-center gap-2 ${
+              className={`px-8 py-2.5 rounded-full transition-all font-bold text-sm tracking-wide flex items-center gap-2 cursor-pointer ${
                 searchType === "name"
                   ? "bg-white text-black"
                   : "bg-neutral-800 text-neutral-400 hover:bg-neutral-700 hover:text-white border border-neutral-700"
@@ -209,7 +209,7 @@ export default function Home() {
             </button>
             <button
               onClick={() => setSearchType("barcode")}
-              className={`px-8 py-2.5 rounded-full transition-all font-bold text-sm tracking-wide flex items-center gap-2 ${
+              className={`px-8 py-2.5 rounded-full transition-all font-bold text-sm tracking-wide flex items-center gap-2 cursor-pointer ${
                 searchType === "barcode"
                   ? "bg-white text-black"
                   : "bg-neutral-800 text-neutral-400 hover:bg-neutral-700 hover:text-white border border-neutral-700"
@@ -307,7 +307,7 @@ export default function Home() {
                     <button
                       onClick={handleLoadMore}
                       disabled={loading}
-                      className="group relative bg-white hover:bg-neutral-200 text-black px-12 py-4 rounded-full font-black text-sm tracking-wider transition-all hover:scale-105 disabled:bg-neutral-800 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-3"
+                      className="group relative bg-white hover:bg-neutral-200 text-black px-12 py-4 rounded-full font-black text-sm tracking-wider transition-all hover:scale-105 disabled:bg-neutral-800 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-3 cursor-pointer"
                     >
                       {loading ? (
                         <>
@@ -386,7 +386,7 @@ export default function Home() {
                         setSelectedCategory("");
                         setPage(1);
                       }}
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-neutral-800 hover:bg-neutral-700 text-white font-medium transition-colors border border-neutral-700"
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-neutral-800 hover:bg-neutral-700 text-white font-medium transition-colors border border-neutral-700 cursor-pointer"
                     >
                       <svg
                         className="w-4 h-4"

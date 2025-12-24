@@ -10,7 +10,7 @@ export default function CartButton() {
   return (
     <button
       onClick={() => dispatch(toggleCart())}
-      className="relative p-2 rounded-full bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 transition-all hover:scale-105 group"
+      className="relative p-2 rounded-full bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 transition-all hover:scale-105 group cursor-pointer"
     >
       <svg
         className="w-6 h-6 text-white"

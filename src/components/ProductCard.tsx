@@ -181,7 +181,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="p-4 pt-0">
         <button
           onClick={handleAddToCart}
-          className={`w-full py-2.5 rounded-full font-bold text-sm transition-all ${
+          className={`w-full py-2.5 rounded-full font-bold text-sm transition-all cursor-pointer ${
             addedToCart
               ? "bg-neutral-700 text-white border-2 border-neutral-500"
               : "bg-white hover:bg-neutral-200 text-black hover:scale-105"

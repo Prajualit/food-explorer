@@ -157,7 +157,7 @@ export default function ProductDetailPage() {
           </p>
           <button
             onClick={() => router.push("/")}
-            className="bg-white hover:bg-neutral-200 text-black px-8 py-3 rounded-full font-bold transition-all hover:scale-105"
+            className="bg-white hover:bg-neutral-200 text-black px-8 py-3 rounded-full font-bold transition-all hover:scale-105 cursor-pointer"
           >
             Back to Home
           </button>
@@ -182,7 +182,7 @@ export default function ProductDetailPage() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <button
             onClick={() => router.push("/")}
-            className="text-white hover:text-neutral-300 font-bold flex items-center gap-2 transition-colors group"
+            className="text-white hover:text-neutral-300 font-bold flex items-center gap-2 transition-colors group cursor-pointer"
           >
             <svg
               className="w-5 h-5 group-hover:-translate-x-1 transition-transform"
@@ -327,7 +327,7 @@ export default function ProductDetailPage() {
 
               <button
                 onClick={handleAddToCart}
-                className={`w-full mb-6 py-4 rounded-full font-bold text-base transition-all ${
+                className={`w-full mb-6 py-4 rounded-full font-bold text-base transition-all cursor-pointer ${
                   addedToCart
                     ? "bg-neutral-700 text-white border-2 border-neutral-500"
                     : "bg-white hover:bg-neutral-200 text-black hover:scale-105"

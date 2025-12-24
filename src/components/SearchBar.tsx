@@ -35,7 +35,7 @@ export default function SearchBar({
         />
         <button
           onClick={onSearch}
-          className="absolute right-2 bg-white hover:bg-neutral-200 text-black px-8 py-2.5 rounded-full transition-all font-bold text-sm tracking-wide hover:scale-105 active:scale-95 flex items-center gap-2"
+          className="absolute right-2 bg-white hover:bg-neutral-200 text-black px-8 py-2.5 rounded-full transition-all font-bold text-sm tracking-wide hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

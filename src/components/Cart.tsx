@@ -82,7 +82,7 @@ export default function Cart() {
           </h2>
           <button
             onClick={handleClose}
-            className="text-neutral-400 hover:text-white transition-colors"
+            className="text-neutral-400 hover:text-white transition-colors cursor-pointer"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -188,7 +188,7 @@ export default function Cart() {
                                   item.quantity - 1
                                 )
                               }
-                              className="w-7 h-7 rounded-lg bg-neutral-700 hover:bg-neutral-600 text-white flex items-center justify-center transition-colors"
+                              className="w-7 h-7 rounded-lg bg-neutral-700 hover:bg-neutral-600 text-white flex items-center justify-center transition-colors cursor-pointer"
                             >
                               <svg
                                 className="w-4 h-4"
@@ -214,7 +214,7 @@ export default function Cart() {
                                   item.quantity + 1
                                 )
                               }
-                              className="w-7 h-7 rounded-lg bg-neutral-700 hover:bg-neutral-600 text-white flex items-center justify-center transition-colors"
+                              className="w-7 h-7 rounded-lg bg-neutral-700 hover:bg-neutral-600 text-white flex items-center justify-center transition-colors cursor-pointer"
                             >
                               <svg
                                 className="w-4 h-4"
@@ -234,7 +234,7 @@ export default function Cart() {
 
                           <button
                             onClick={() => handleRemove(item.product.code)}
-                            className="text-red-500 hover:text-red-400 transition-colors p-1"
+                            className="text-red-500 hover:text-red-400 transition-colors p-1 cursor-pointer"
                           >
                             <svg
                               className="w-5 h-5"
@@ -271,14 +271,14 @@ export default function Cart() {
 
             <button
               onClick={handleClearCart}
-              className="w-full py-3 rounded-full bg-neutral-800 hover:bg-neutral-700 text-white font-medium transition-colors border border-neutral-700"
+              className="w-full py-3 rounded-full bg-neutral-800 hover:bg-neutral-700 text-white font-medium transition-colors border border-neutral-700 cursor-pointer"
             >
               Clear Cart
             </button>
 
             <button
               onClick={handleCheckout}
-              className="w-full py-4 rounded-full bg-white hover:bg-neutral-200 text-black font-bold transition-all hover:scale-105 active:scale-95"
+              className="w-full py-4 rounded-full bg-white hover:bg-neutral-200 text-black font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
             >
               Proceed to Checkout
             </button>
@@ -332,13 +332,13 @@ export default function Cart() {
               <div className="space-y-3">
                 <button
                   onClick={handleConfirmCheckout}
-                  className="w-full py-3 rounded-full bg-white hover:bg-neutral-200 text-black font-bold transition-all hover:scale-105"
+                  className="w-full py-3 rounded-full bg-white hover:bg-neutral-200 text-black font-bold transition-all hover:scale-105 cursor-pointer"
                 >
                   Confirm Order
                 </button>
                 <button
                   onClick={handleCancelCheckout}
-                  className="w-full py-3 rounded-full bg-neutral-700 hover:bg-neutral-600 text-white font-medium transition-colors"
+                  className="w-full py-3 rounded-full bg-neutral-700 hover:bg-neutral-600 text-white font-medium transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
