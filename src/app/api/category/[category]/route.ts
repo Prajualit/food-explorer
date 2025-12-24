@@ -1,0 +1,62 @@
+import { NextResponse } from "next/server";
+
+const BASE_URL = "https://world.openfoodfacts.org";
+
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ category: string }> }
+) {
+  const { category } = await params;
+  const { searchParams } = new URL(request.url);
+  const page = searchParams.get("page") || "1";
+  const pageSize = searchParams.get("page_size") || "24";
+
+  try {
+    const url = `${BASE_URL}/category/${encodeURIComponent(
+      category
+    )}.json?page=${page}&page_size=${pageSize}`;
+    
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'FoodExplorer/1.0',
+        'Accept': 'application/json',
+      },
+      next: { revalidate: 60 },
+    });
+    
+    if (!response.ok) {
+      console.error(`OpenFoodFacts API returned status ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const text = await response.text();
+    
+    if (text.trim().startsWith('<!') || text.trim().startsWith('<html')) {
+      console.error("OpenFoodFacts API returned HTML instead of JSON");
+      throw new Error("API rate limit or server error");
+    }
+    
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (parseError) {
+      console.error("Failed to parse API response as JSON");
+      throw new Error("Invalid JSON response");
+    }
+    
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error("Error fetching products by category:", error);
+    return NextResponse.json(
+      { 
+        products: [],
+        count: 0,
+        page: parseInt(page),
+        page_count: 0,
+        page_size: parseInt(pageSize),
+        skip: 0
+      },
+      { status: 200 }
+    );
+  }
+}
