@@ -329,7 +329,7 @@ export default function ProductDetailPage() {
                 onClick={handleAddToCart}
                 className={`w-full mb-6 py-4 rounded-full font-bold text-base transition-all ${
                   addedToCart
-                    ? "bg-green-500 text-white"
+                    ? "bg-neutral-700 text-white border-2 border-neutral-500"
                     : "bg-white hover:bg-neutral-200 text-black hover:scale-105"
                 }`}
               >

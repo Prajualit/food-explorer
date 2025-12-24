@@ -183,7 +183,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           onClick={handleAddToCart}
           className={`w-full py-2.5 rounded-full font-bold text-sm transition-all ${
             addedToCart
-              ? "bg-green-500 text-white"
+              ? "bg-neutral-700 text-white border-2 border-neutral-500"
               : "bg-white hover:bg-neutral-200 text-black hover:scale-105"
           }`}
         >
