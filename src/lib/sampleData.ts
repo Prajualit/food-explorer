@@ -50,7 +50,6 @@ export const sampleProducts: Product[] = [
 ];
 
 export function getSampleProductsResponse(page: number = 1, pageSize: number = 24) {
-  // Duplicate sample products to fill the page
   const products = [];
   for (let i = 0; i < pageSize; i++) {
     const sampleProduct = sampleProducts[i % sampleProducts.length];

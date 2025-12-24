@@ -1,6 +1,5 @@
 import { ProductsResponse, ProductDetailResponse, Product } from "@/types/product";
 
-// Fetch products by search term
 export async function searchProducts(
   searchTerm: string,
   page: number = 1,
@@ -31,7 +30,6 @@ export async function searchProducts(
   }
 }
 
-// Fetch product by barcode
 export async function getProductByBarcode(
   barcode: string
 ): Promise<ProductDetailResponse> {
@@ -59,7 +57,6 @@ export async function getProductByBarcode(
   }
 }
 
-// Fetch products by category
 export async function getProductsByCategory(
   category: string,
   page: number = 1,
@@ -90,7 +87,6 @@ export async function getProductsByCategory(
   }
 }
 
-// Get popular categories (hardcoded list of popular categories)
 export function getPopularCategories(): string[] {
   return [
     "beverages",

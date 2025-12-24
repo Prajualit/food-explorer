@@ -18,7 +18,6 @@ body {
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -37,7 +36,6 @@ body {
   background: #444;
 }
 
-/* Card hover lift effect */
 .hover-lift {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -46,14 +44,12 @@ body {
   transform: translateY(-4px);
 }
 
-/* Nutrition grade colors */
 .grade-a { background: linear-gradient(135deg, #22c55e, #16a34a); }
 .grade-b { background: linear-gradient(135deg, #84cc16, #65a30d); }
 .grade-c { background: linear-gradient(135deg, #eab308, #ca8a04); }
 .grade-d { background: linear-gradient(135deg, #f97316, #ea580c); }
 .grade-e { background: linear-gradient(135deg, #ef4444, #dc2626); }
 
-/* Shimmer effect for loading */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -65,7 +61,6 @@ body {
   animation: shimmer 1.5s infinite;
 }
 
-/* Focus ring */
 .focus-ring {
   outline: none;
 }

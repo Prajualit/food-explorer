@@ -5,8 +5,13 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { Product } from "@/types/product";
 import { getProductByBarcode } from "@/lib/api";
+import { useAppDispatch } from "@/store/hooks";
+import { addToCart } from "@/store/cartSlice";
+import Cart from "@/components/Cart";
+import CartButton from "@/components/CartButton";
 
 export default function ProductDetailPage() {
+  const dispatch = useAppDispatch();
   const params = useParams();
   const router = useRouter();
   const barcode = params.barcode as string;
@@ -16,6 +21,7 @@ export default function ProductDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -41,6 +47,14 @@ export default function ProductDetailPage() {
       fetchProductDetails();
     }
   }, [barcode]);
+
+  const handleAddToCart = () => {
+    if (product) {
+      dispatch(addToCart(product));
+      setAddedToCart(true);
+      setTimeout(() => setAddedToCart(false), 2000);
+    }
+  };
 
   const getGradeStyles = (grade?: string) => {
     if (!grade) return { bg: "bg-neutral-600", text: "text-white" };
@@ -155,7 +169,6 @@ export default function ProductDetailPage() {
   const imageUrl =
     product.image_url || product.image_front_url || product.image_small_url;
   const rawGrade = product.nutriscore_grade || product.nutrition_grades;
-  // Only accept valid grades (a-e), treat everything else as no score
   const validGrades = ["a", "b", "c", "d", "e"];
   const nutritionGrade =
     rawGrade && validGrades.includes(rawGrade.toLowerCase())
@@ -165,7 +178,6 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen bg-neutral-950">
-      {/* Header */}
       <header className="bg-neutral-900 border-b border-neutral-800 sticky top-0 z-50 backdrop-blur-xl bg-opacity-95">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <button
@@ -188,7 +200,8 @@ export default function ProductDetailPage() {
             <span>BACK TO PRODUCTS</span>
           </button>
 
-          {/* Barcode badge */}
+          <CartButton />
+
           <div className="hidden sm:flex items-center gap-2 text-neutral-400 text-sm">
             <svg
               className="w-4 h-4"
@@ -208,11 +221,9 @@ export default function ProductDetailPage() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 md:p-8">
-            {/* Left Column - Image */}
             <div className="flex flex-col">
               <div className="relative w-full h-80 md:h-96 bg-neutral-800/30 rounded-xl overflow-hidden border border-neutral-800">
                 {imageUrl && !imageError ? (
@@ -254,7 +265,6 @@ export default function ProductDetailPage() {
                 )}
               </div>
 
-              {/* Labels */}
               {product.labels_tags && product.labels_tags.length > 0 && (
                 <div className="mt-6">
                   <h3 className="font-semibold text-sm text-neutral-400 mb-3 uppercase tracking-wider">
@@ -274,14 +284,11 @@ export default function ProductDetailPage() {
               )}
             </div>
 
-            {/* Right Column - Details */}
             <div className="flex flex-col">
-              {/* Product Name */}
               <h1 className="text-2xl md:text-3xl font-bold mb-3 text-white leading-tight">
                 {product.product_name || "Unknown Product"}
               </h1>
 
-              {/* Brand */}
               {product.brands && (
                 <p className="text-lg text-neutral-400 mb-6 flex items-center gap-2">
                   <svg
@@ -299,7 +306,6 @@ export default function ProductDetailPage() {
                 </p>
               )}
 
-              {/* Nutrition Grade - Large Display */}
               <div className="mb-6 p-4 bg-neutral-800/50 rounded-xl border border-neutral-800">
                 <h3 className="font-semibold text-sm text-neutral-400 mb-3 uppercase tracking-wider">
                   Nutri-Score
@@ -319,9 +325,52 @@ export default function ProductDetailPage() {
                 </div>
               </div>
 
-              {/* Info Grid */}
+              <button
+                onClick={handleAddToCart}
+                className={`w-full mb-6 py-4 rounded-full font-bold text-base transition-all ${
+                  addedToCart
+                    ? "bg-green-500 text-white"
+                    : "bg-white hover:bg-neutral-200 text-black hover:scale-105"
+                }`}
+              >
+                {addedToCart ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    ADDED TO CART
+                  </span>
+                ) : (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                      />
+                    </svg>
+                    ADD TO CART
+                  </span>
+                )}
+              </button>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                {/* Categories */}
                 {product.categories && (
                   <div className="p-4 bg-neutral-800/30 rounded-xl border border-neutral-800">
                     <h3 className="font-semibold text-sm text-neutral-500 mb-1 uppercase tracking-wider flex items-center gap-2">
@@ -346,7 +395,6 @@ export default function ProductDetailPage() {
                   </div>
                 )}
 
-                {/* Serving Size */}
                 {product.serving_size && (
                   <div className="p-4 bg-neutral-800/30 rounded-xl border border-neutral-800">
                     <h3 className="font-semibold text-sm text-neutral-500 mb-1 uppercase tracking-wider flex items-center gap-2">
@@ -371,7 +419,6 @@ export default function ProductDetailPage() {
                   </div>
                 )}
 
-                {/* Barcode (mobile) */}
                 <div className="p-4 bg-neutral-800/30 rounded-xl border border-neutral-800 sm:hidden">
                   <h3 className="font-semibold text-sm text-neutral-500 mb-1 uppercase tracking-wider flex items-center gap-2">
                     <svg
@@ -420,9 +467,7 @@ export default function ProductDetailPage() {
             </div>
           </div>
 
-          {/* Full Width Sections */}
           <div className="px-6 md:px-8 pb-8 space-y-6">
-            {/* Ingredients */}
             {product.ingredients_text && (
               <div>
                 <h2 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
@@ -449,7 +494,6 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Allergens */}
             {product.allergens && (
               <div>
                 <h2 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
@@ -476,7 +520,6 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Nutritional Values */}
             {product.nutriments && (
               <div>
                 <h2 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
@@ -620,7 +663,6 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Countries */}
             {product.countries && (
               <div>
                 <h2 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
@@ -646,7 +688,6 @@ export default function ProductDetailPage() {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-neutral-800 mt-8 py-6">
         <div className="container mx-auto px-4 text-center">
           <p className="text-neutral-500 text-sm">
@@ -662,6 +703,8 @@ export default function ProductDetailPage() {
           </p>
         </div>
       </footer>
+
+      <Cart />
     </div>
   );
 }

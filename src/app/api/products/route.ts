@@ -8,8 +8,7 @@ export async function GET(request: Request) {
   const pageSize = searchParams.get("page_size") || "24";
 
   try {
-    // Use a broader search parameter to get general products
-    // Adding search_simple=1 with action=process to get general product listing
+
     const url = `${BASE_URL}/cgi/search.pl?search_simple=1&action=process&page=${page}&page_size=${pageSize}&json=true`;
     
     const response = await fetch(url, {
@@ -27,7 +26,6 @@ export async function GET(request: Request) {
     
     const text = await response.text();
     
-    // Check if response is HTML (rate limiting or server error)
     if (text.trim().startsWith('<!') || text.trim().startsWith('<html')) {
       console.error("OpenFoodFacts API returned HTML instead of JSON - likely rate limited or server error");
       throw new Error("API rate limit or server error");
